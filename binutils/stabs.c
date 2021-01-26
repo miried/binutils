@@ -54,6 +54,8 @@ struct stab_handle
   long symcount;
   /* The accumulated file name string.  */
   char *so_string;
+  /* wombat: we keep also the base string */
+  char *so_base_string;
   /* The value of the last N_SO symbol.  */
   bfd_vma so_value;
   /* The value of the start of the file, so that we can handle file
@@ -432,7 +434,7 @@ parse_stab (void *dhandle, void *handle, int type, int desc, bfd_vma value,
   if (info->so_string != NULL
       && (type != N_SO || *string == '\0' || value != info->so_value))
     {
-      if (! debug_set_filename (dhandle, info->so_string))
+      if (! debug_set_filename (dhandle, info->so_string, info->so_base_string))
 	return FALSE;
       info->main_filename = info->so_string;
 
@@ -543,7 +545,10 @@ parse_stab (void *dhandle, void *handle, int type, int desc, bfd_vma value,
 	 form of absolute path specification, we discard the previously
          accumulated strings.  */
       if (info->so_string == NULL)
-	info->so_string = xstrdup (string);
+	{
+		info->so_string = xstrdup (string);
+		info->so_base_string = xstrdup (string);
+	}
       else
 	{
 	  char *f;
@@ -551,7 +556,10 @@ parse_stab (void *dhandle, void *handle, int type, int desc, bfd_vma value,
 	  f = info->so_string;
 
 	  if (IS_ABSOLUTE_PATH (string))
+	{
 	    info->so_string = xstrdup (string);
+	    info->so_base_string = xstrdup (string);
+	}
 	  else
 	    info->so_string = concat (info->so_string, string,
 				      (const char *) NULL);

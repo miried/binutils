@@ -3633,7 +3633,7 @@ dump_bfd (bfd *abfd)
     }
 
   if (! dump_debugging_tags && ! suppress_bfd_header)
-    printf (_("\n%s:     file format %s\n"), bfd_get_filename (abfd),
+    printf (_("\e[2m%s\n\e[2m%s\n"), bfd_get_filename (abfd),
 	    abfd->xvec->name);
   if (dump_ar_hdrs)
     print_arelt_descr (stdout, abfd, TRUE, FALSE);
@@ -3644,7 +3644,7 @@ dump_bfd (bfd *abfd)
   if (dump_private_options != NULL)
     dump_target_specific (abfd);
   if (! dump_debugging_tags && ! suppress_bfd_header)
-    putchar ('\n');
+    printf (_("\e[2m\n"));
 
   if (dump_symtab
       || dump_reloc_info

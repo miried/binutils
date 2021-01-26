@@ -90,6 +90,8 @@ struct debug_file
   struct debug_file *next;
   /* The name of the source file.  */
   const char *filename;
+  /* wombat: base path name */
+  const char *basepath_name;
   /* Global functions, variables, types, etc.  */
   struct debug_namespace *globals;
 };
@@ -672,7 +674,7 @@ debug_init (void)
    unit.  */
 
 bfd_boolean
-debug_set_filename (void *handle, const char *name)
+debug_set_filename (void *handle, const char *name, const char *base_name)
 {
   struct debug_handle *info = (struct debug_handle *) handle;
   struct debug_file *nfile;
@@ -681,10 +683,14 @@ debug_set_filename (void *handle, const char *name)
   if (name == NULL)
     name = "";
 
+  if (base_name == NULL)
+    base_name = "";
+
   nfile = (struct debug_file *) xmalloc (sizeof *nfile);
   memset (nfile, 0, sizeof *nfile);
 
   nfile->filename = name;
+  nfile->basepath_name = base_name;
 
   nunit = (struct debug_unit *) xmalloc (sizeof *nunit);
   memset (nunit, 0, sizeof *nunit);
@@ -2332,7 +2338,7 @@ debug_write (void *handle, const struct debug_write_fns *fns, void *fhandle)
       info->current_write_lineno = u->linenos;
       info->current_write_lineno_index = 0;
 
-      if (! (*fns->start_compilation_unit) (fhandle, u->files->filename))
+      if (! (*fns->start_compilation_unit) (fhandle, u->files->filename, u->files->basepath_name))
 	return FALSE;
 
       first_file = TRUE;

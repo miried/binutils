@@ -85,7 +85,7 @@ static char *pop_type (struct pr_handle *);
 static void print_vma (bfd_vma, char *, bfd_boolean, bfd_boolean);
 static bfd_boolean pr_fix_visibility
   (struct pr_handle *, enum debug_visibility);
-static bfd_boolean pr_start_compilation_unit (void *, const char *);
+static bfd_boolean pr_start_compilation_unit (void *, const char *, const char *);
 static bfd_boolean pr_start_source (void *, const char *);
 static bfd_boolean pr_empty_type (void *);
 static bfd_boolean pr_void_type (void *);
@@ -532,13 +532,14 @@ print_vma (bfd_vma vma, char *buf, bfd_boolean unsignedp, bfd_boolean hexp)
 /* Start a new compilation unit.  */
 
 static bfd_boolean
-pr_start_compilation_unit (void *p, const char *filename)
+pr_start_compilation_unit (void *p, const char *filename, const char *basepath)
 {
   struct pr_handle *info = (struct pr_handle *) p;
 
   assert (info->indent == 0);
 
-  fprintf (info->f, "%s:\n", filename);
+  fprintf (info->f, "\e[7m%s\n", basepath);
+  fprintf (info->f, "\e[1m%s\n", filename);
 
   return TRUE;
 }
@@ -552,7 +553,7 @@ pr_start_source (void *p, const char *filename)
 
   assert (info->indent == 0);
 
-  fprintf (info->f, " %s:\n", filename);
+  fprintf (info->f, "\e[4m%s\n", filename);
 
   return TRUE;
 }

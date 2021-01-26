@@ -735,7 +735,7 @@ parse_coff (bfd *abfd, asymbol **syms, long symcount, void *dhandle)
 	{
 	  /* The last C_FILE symbol points to the first external
              symbol.  */
-	  if (! debug_set_filename (dhandle, "*globals*"))
+	  if (! debug_set_filename (dhandle, "*globals*", NULL))
 	    return FALSE;
 	}
 
@@ -753,7 +753,7 @@ parse_coff (bfd *abfd, asymbol **syms, long symcount, void *dhandle)
 
 	case C_FILE:
 	  next_c_file = syment.n_value;
-	  if (! debug_set_filename (dhandle, name))
+	  if (! debug_set_filename (dhandle, name, NULL))
 	    return FALSE;
 	  break;
 

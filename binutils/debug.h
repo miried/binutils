@@ -169,7 +169,7 @@ struct debug_write_fns
 {
   /* This is called at the start of each new compilation unit with the
      name of the main file in the new unit.  */
-  bfd_boolean (*start_compilation_unit) (void *, const char *);
+  bfd_boolean (*start_compilation_unit) (void *, const char *, const char *);
 
   /* This is called at the start of each source file within a
      compilation unit, before outputting any global information for
@@ -433,7 +433,7 @@ extern void *debug_init (void);
 /* Set the source filename.  This implicitly starts a new compilation
    unit.  */
 
-extern bfd_boolean debug_set_filename (void *, const char *);
+extern bfd_boolean debug_set_filename (void *, const char *, const char *);
 
 /* Change source files to the given file name.  This is used for
    include files in a single compilation unit.  */
