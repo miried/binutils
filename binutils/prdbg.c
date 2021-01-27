@@ -1059,7 +1059,7 @@ pr_start_struct_type (void *p, const char *tag, unsigned int id,
     {
       char idbuf[20];
 
-      sprintf (idbuf, "%%anon%u", id);
+      sprintf (idbuf, "anon%u", id);
       if (! append_type (info, idbuf))
 	return FALSE;
     }
@@ -1242,7 +1242,7 @@ pr_start_class_type (void *p, const char *tag, unsigned int id,
     {
       char idbuf[20];
 
-      sprintf (idbuf, "%%anon%u", id);
+      sprintf (idbuf, "anon%u", id);
       if (! append_type (info, idbuf))
 	return FALSE;
     }
@@ -1635,7 +1635,7 @@ pr_tag_type (void *p, const char *name, unsigned int id,
     tag = name;
   else
     {
-      sprintf (idbuf, "%%anon%u", id);
+      sprintf (idbuf, "anon%u", id);
       tag = idbuf;
     }
 
